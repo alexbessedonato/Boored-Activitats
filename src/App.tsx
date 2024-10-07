@@ -9,33 +9,33 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [activity, setActivity] = useState<string>("");
 
-  // Detecta si está en producción o desarrollo para ajustar la URL
-  const apiBaseUrl =
-    process.env.NODE_ENV === "production"
-      ? "" // En producción, Vercel manejará la ruta de /api
-      : "http://localhost:3000/api"; // En desarrollo, llamamos directamente a nuestro servidor local (ajusta el puerto si es diferente)
-
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = `${apiBaseUrl}/fetch-activity`; // Usamos nuestra función API
+    let url = "/api/random"; // Proxy manejará esta petición
 
     if (selectedType) {
-      url += `?type=${selectedType}`;
+      url = `/api/filter?type=${selectedType}`; // Si hay un tipo seleccionado
     }
 
     try {
       console.log(`Fetching activity from ${url}...`);
-      const response = await fetch(url);
+      const response = await fetch(url); // Esta solicitud será redirigida por el proxy
       if (!response.ok) {
         throw new Error(`Error fetching activity: ${response.status}`);
       }
+
       const data = await response.json();
+      console.log("Actividad recibida:", data);
 
-      const activity = Array.isArray(data)
-        ? data[Math.floor(Math.random() * data.length)].activity
-        : data.activity;
-
-      setActivity(activity);
+      if (data && data.activity) {
+        setActivity(data.activity); // Asegúrate de que la respuesta tenga un campo `activity`
+      } else if (Array.isArray(data) && data.length > 0) {
+        // Si la respuesta es un array (en caso de filtro), seleccionamos una actividad aleatoria
+        const randomIndex = Math.floor(Math.random() * data.length);
+        setActivity(data[randomIndex].activity);
+      } else {
+        setActivity("No se encontró ninguna actividad.");
+      }
     } catch (error) {
       console.error("Failed to fetch activity:", error);
       setActivity("Error al obtener la actividad");
@@ -44,7 +44,7 @@ function App() {
 
   React.useEffect(() => {
     fetchActivity();
-  }, []);
+  }, []); // Solo se ejecuta al cargar
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -6,9 +6,9 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:3000", // Cambia este puerto por el puerto de tu servidor backend
+        target: "https://bored-api.appbrewery.com", // La API de actividades
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""), // Esto elimina `/api` de la solicitud
+        rewrite: (path) => path.replace(/^\/api/, ""), // Elimina `/api` del path
       },
     },
   },
