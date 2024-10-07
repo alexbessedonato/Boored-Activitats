@@ -9,30 +9,29 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [activity, setActivity] = useState<string>("");
 
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const apiBaseUrl = isDevelopment ? "/api" : "/api"; // Utilizamos nuestra API tanto en desarrollo como en producción
+
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = "/api/random"; // Proxy manejará esta petición
+    let url = `${apiBaseUrl}/fetch-activity`; // Usamos nuestra función API de Vercel
 
     if (selectedType) {
-      url = `/api/filter?type=${selectedType}`; // Si hay un tipo seleccionado
+      url += `?type=${selectedType}`;
     }
 
     try {
       console.log(`Fetching activity from ${url}...`);
-      const response = await fetch(url); // Esta solicitud será redirigida por el proxy
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Error fetching activity: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Actividad recibida:", data);
-
       if (data && data.activity) {
-        setActivity(data.activity); // Asegúrate de que la respuesta tenga un campo `activity`
+        setActivity(data.activity);
       } else if (Array.isArray(data) && data.length > 0) {
-        // Si la respuesta es un array (en caso de filtro), seleccionamos una actividad aleatoria
-        const randomIndex = Math.floor(Math.random() * data.length);
-        setActivity(data[randomIndex].activity);
+        setActivity(data[Math.floor(Math.random() * data.length)].activity);
       } else {
         setActivity("No se encontró ninguna actividad.");
       }
@@ -44,7 +43,7 @@ function App() {
 
   React.useEffect(() => {
     fetchActivity();
-  }, []); // Solo se ejecuta al cargar
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
