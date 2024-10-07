@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import "./index.css"; // O './App.css', según el nombre de tu archivo CSS
+import "./index.css";
 import Header from "./components/Header";
 import Mascot from "./components/Mascot";
 import ActivityFetcher from "./components/ActicityFetcher";
@@ -9,13 +9,19 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null); // Empieza sin ningún tipo seleccionado
   const [activity, setActivity] = useState<string>("");
 
+  // Detecta si está en producción o desarrollo para ajustar la URL
+  const apiBaseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://bored-api.appbrewery.com" // API en producción
+      : "/api"; // Proxy local en desarrollo
+
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = "/api/random"; // URL por defecto para actividad aleatoria
+    let url = `${apiBaseUrl}/random`; // URL por defecto para actividad aleatoria
 
     // Si hay un tipo seleccionado, usamos el endpoint de filtro
     if (selectedType) {
-      url = `/api/filter?type=${selectedType}`; // Cambiamos la URL al endpoint correcto para filtro
+      url = `${apiBaseUrl}/filter?type=${selectedType}`; // Cambiamos la URL al endpoint correcto para filtro
     }
 
     try {
