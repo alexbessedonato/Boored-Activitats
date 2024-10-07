@@ -9,29 +9,36 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [activity, setActivity] = useState<string>("");
 
-  const isDevelopment = process.env.NODE_ENV === "development";
-  const apiBaseUrl = isDevelopment ? "/api" : "/api"; // Utilizamos nuestra API tanto en desarrollo como en producción
+  // Detectar si estamos en desarrollo o producción
+  const apiBaseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://bored-api.appbrewery.com" // API en producción
+      : "/api"; // Proxy local en desarrollo
 
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = `${apiBaseUrl}/fetch-activity`; // Usamos nuestra función API de Vercel
+    let url = `${apiBaseUrl}/random`; // URL por defecto para la actividad aleatoria
 
     if (selectedType) {
-      url += `?type=${selectedType}`;
+      url = `${apiBaseUrl}/filter?type=${selectedType}`; // Si hay un tipo seleccionado
     }
 
     try {
       console.log(`Fetching activity from ${url}...`);
-      const response = await fetch(url);
+      const response = await fetch(url); // Esta solicitud será redirigida por el proxy en local o directamente en producción
       if (!response.ok) {
         throw new Error(`Error fetching activity: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Actividad recibida:", data);
+
       if (data && data.activity) {
-        setActivity(data.activity);
+        setActivity(data.activity); // Asegúrate de que la respuesta tenga un campo `activity`
       } else if (Array.isArray(data) && data.length > 0) {
-        setActivity(data[Math.floor(Math.random() * data.length)].activity);
+        // Si la respuesta es un array (en caso de filtro), seleccionamos una actividad aleatoria
+        const randomIndex = Math.floor(Math.random() * data.length);
+        setActivity(data[randomIndex].activity);
       } else {
         setActivity("No se encontró ninguna actividad.");
       }
@@ -43,7 +50,7 @@ function App() {
 
   React.useEffect(() => {
     fetchActivity();
-  }, []);
+  }, []); // Solo se ejecuta al cargar
 
   return (
     <div className="min-h-screen flex flex-col">
