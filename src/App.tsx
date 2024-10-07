@@ -9,17 +9,23 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [activity, setActivity] = useState<string>("");
 
+  // Detectar si estamos en desarrollo o producción
+  const apiBaseUrl =
+    process.env.NODE_ENV === "production"
+      ? "https://bored-api.appbrewery.com" // API en producción
+      : "/api"; // Proxy local en desarrollo
+
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = "/api/random"; // Proxy manejará esta petición
+    let url = `${apiBaseUrl}/random`; // URL por defecto para la actividad aleatoria
 
     if (selectedType) {
-      url = `/api/filter?type=${selectedType}`; // Si hay un tipo seleccionado
+      url = `${apiBaseUrl}/filter?type=${selectedType}`; // Si hay un tipo seleccionado
     }
 
     try {
       console.log(`Fetching activity from ${url}...`);
-      const response = await fetch(url); // Esta solicitud será redirigida por el proxy
+      const response = await fetch(url); // Esta solicitud será redirigida por el proxy en local o directamente en producción
       if (!response.ok) {
         throw new Error(`Error fetching activity: ${response.status}`);
       }
