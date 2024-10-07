@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Boored Activity Finder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción
 
-Currently, two official plugins are available:
+**Boored Activity Finder** es una aplicación que ayuda a las personas a encontrar actividades cuando están aburridas. Utiliza la [Bored API](https://boredapi.com/) para generar actividades aleatorias o filtradas por categorías como social, educativa, caritativa, entre otras.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Características
 
-## Expanding the ESLint configuration
+- Genera actividades aleatorias para cuando estés aburrido.
+- Filtra actividades por categorías como social, educación, caridad, etc.
+- Interfaz amigable y responsive, adaptable a dispositivos móviles.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tecnologías Utilizadas
 
-- Configure the top-level `parserOptions` property like this:
+Este proyecto fue construido utilizando las siguientes tecnologías:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **React**: Biblioteca de JavaScript para construir interfaces de usuario.
+- **Vite**: Herramienta de desarrollo rápida para aplicaciones de React.
+- **Tailwind CSS**: Framework de CSS para crear estilos de manera rápida y sencilla.
+- **TypeScript**: Superset de JavaScript que añade tipado estático al código.
+- **Bored API**: API externa utilizada para generar actividades aleatorias.
+
+## Desplegar el Proyecto en Local
+
+Sigue estos pasos para ejecutar el proyecto en tu entorno local:
+
+### 1. Clona el repositorio
+
+Clona el repositorio en tu máquina local usando el siguiente comando:
+
+```bash
+git clone https://github.com/tu-usuario/boored-activity-finder.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Accede al directorio del proyecto
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Navega al directorio del proyecto recién clonado:
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd boored-activity-finder
 ```
+
+### 3. Instala las dependencias
+
+Instala todas las dependencias necesarias utilizando npm o yarn:
+
+```bash
+npm install
+```
+
+### 4. Ejecuta el servidor de desarrollo
+
+Inicia el proyecto en modo de desarrollo:
+
+```bash
+npm run dev
+```
+
+### 5. Abre el navegador
+
+Una vez que el servidor esté en ejecución, abre tu navegador y navega a:
+
+```bash
+http://localhost:3000
+```
+
+Aquí podrás ver la aplicación ejecutándose localmente.
