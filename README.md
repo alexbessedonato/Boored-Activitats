@@ -4,6 +4,14 @@
 
 **Boored Activity Finder** es una aplicación que ayuda a las personas a encontrar actividades cuando están aburridas. Utiliza la [Bored API](https://boredapi.com/) para generar actividades aleatorias o filtradas por categorías como social, educativa, caritativa, entre otras.
 
+## DEMPO
+
+A demo can be found at:
+
+```bash
+https://boored-activitats-demo.netlify.app/
+```
+
 ## Características
 
 - Genera actividades aleatorias para cuando estés aburrido.
