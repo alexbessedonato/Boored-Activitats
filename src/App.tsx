@@ -9,23 +9,17 @@ function App() {
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [activity, setActivity] = useState<string>("");
 
-  // Detectar si estamos en desarrollo o producción
-  const apiBaseUrl =
-    process.env.NODE_ENV === "production"
-      ? "https://bored-api.appbrewery.com" // API en producción
-      : "/api"; // Proxy local en desarrollo
-
   // Función para obtener una nueva actividad aleatoria o filtrada
   const fetchActivity = async () => {
-    let url = `${apiBaseUrl}/random`; // URL por defecto para la actividad aleatoria
+    let url = "/api/fetch-activity"; // Apunta a la función API en producción
 
     if (selectedType) {
-      url = `${apiBaseUrl}/filter?type=${selectedType}`; // Si hay un tipo seleccionado
+      url += `?type=${selectedType}`; // Añadir filtro si hay un tipo seleccionado
     }
 
     try {
       console.log(`Fetching activity from ${url}...`);
-      const response = await fetch(url); // Esta solicitud será redirigida por el proxy en local o directamente en producción
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Error fetching activity: ${response.status}`);
       }
@@ -34,11 +28,10 @@ function App() {
       console.log("Actividad recibida:", data);
 
       if (data && data.activity) {
-        setActivity(data.activity); // Asegúrate de que la respuesta tenga un campo `activity`
+        setActivity(data.activity); // Si la respuesta es un solo objeto
       } else if (Array.isArray(data) && data.length > 0) {
-        // Si la respuesta es un array (en caso de filtro), seleccionamos una actividad aleatoria
         const randomIndex = Math.floor(Math.random() * data.length);
-        setActivity(data[randomIndex].activity);
+        setActivity(data[randomIndex].activity); // Si es un array, seleccionamos una actividad aleatoria
       } else {
         setActivity("No se encontró ninguna actividad.");
       }
@@ -49,8 +42,8 @@ function App() {
   };
 
   React.useEffect(() => {
-    fetchActivity();
-  }, []); // Solo se ejecuta al cargar
+    fetchActivity(); // Hacer fetch al cargar la página
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col">
