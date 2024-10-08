@@ -8,9 +8,7 @@
 
 A demo can be found at:
 
-```bash
-https://boored-activitats-demo.netlify.app/
-```
+[BOORED DEMO](https://boored-activitats-demo.netlify.app/)
 
 ## Características
 
