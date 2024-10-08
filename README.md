@@ -10,6 +10,8 @@ A demo can be found at:
 
 [BOORED DEMO](https://boored-activitats-demo.netlify.app/)
 
+AVISO: SI SURGE EL MENSAJE "Error al obtener la actividad" PUEDE DEBERSE AL LIMITE DE PETICIONES DE LA API, AUNQUE NETLIFY LO PONGA COMO ERROR 500
+
 ## Características
 
 - Genera actividades aleatorias para cuando estés aburrido.
