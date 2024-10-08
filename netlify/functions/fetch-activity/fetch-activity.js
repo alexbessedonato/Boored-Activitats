@@ -6,10 +6,7 @@ export const handler = async (event, context) => {
     : "https://bored-api.appbrewery.com/random";
 
   try {
-    // Use dynamic import for node-fetch
-    const fetch = (await import("node-fetch")).default;
-
-    const response = await fetch(apiUrl);
+    const response = await fetch(apiUrl); // Use native fetch in Node.js 18.x
     if (!response.ok) {
       throw new Error(`Error fetching activity: ${response.status}`);
     }
